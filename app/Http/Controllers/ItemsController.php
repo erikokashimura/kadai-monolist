@@ -24,7 +24,6 @@ use \App\Item;
                 'hits' => 20,
             ]);
 
-            // Creating "Item" instance to make it easy to handle.（not saving）
             foreach ($rws_response->getData()['Items'] as $rws_item) {
                 $item = new Item();
                 $item->code = $rws_item['Item']['itemCode'];
@@ -33,6 +32,7 @@ use \App\Item;
                 $item->image_url = str_replace('?_ex=128x128', '', $rws_item['Item']['mediumImageUrls'][0]['imageUrl']);
                 $items[] = $item;
             }
+            // Creating "Item" instance to make it easy to handle.（not saving）
         }
 
         return view('items.create', [
@@ -40,4 +40,17 @@ use \App\Item;
             'items' => $items,
         ]);
     }
+    
+    public function show($id)
+    {
+      $item = Item::find($id);
+      $want_users = $item->want_users;
+
+      return view('items.show', [
+          'item' => $item,
+          'want_users' => $want_users,
+      ]);
+    }
+    
+    
   }
